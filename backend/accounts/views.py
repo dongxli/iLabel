@@ -20,22 +20,22 @@ class Registration(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         validated = serializer.is_valid(raise_exception=False)
-        user = serializer.save()
 
         # can't register
         if validated==False:
             return Response({
                 "valid": False,
-                "user": UserSerializer(user).data,
-                "token": AuthToken.objects.create(user)[1],
+                "user": "",
+                "token": "",
                 "response_message": "Can not register, please change your username or email"
             })
         else:
+            user = serializer.save()
             return Response({
                 "valid": True,
                 "user": UserSerializer(user).data,
                 "token": AuthToken.objects.create(user)[1],
-                "response_message": "Registered"
+                "response_message": "Registered, please log in"
             })
 
 class Login(generics.GenericAPIView):
@@ -51,7 +51,7 @@ class Login(generics.GenericAPIView):
                 "valid": False,
                 "user": "",
                 "token": "",
-                "resposne_message": "User does not exists or wrong credentials"
+                "response_message": "User does not exists or wrong credentials"
             })
 
         user = serializer.validated_data
@@ -59,5 +59,5 @@ class Login(generics.GenericAPIView):
             "valid": True,
             "user": UserSerializer(user).data,
             "token": AuthToken.objects.create(user)[1],
-            "resposne_message": "User found, logging in"
+            "response_message": "User found, logging in"
         })

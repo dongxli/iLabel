@@ -12,7 +12,8 @@ class Register extends Component {
       response_message: "",
       show_message: false,
       validated: false,
-      show_toast: false
+      show_toast: false,
+      response_type: "danger"
     };
   }
 
@@ -33,19 +34,23 @@ class Register extends Component {
       console.log("XD");
       const BODY = {
         username: this.state.username,
-        password: this.state.password
+        password: this.state.password,
+        email: this.state.email
       };
 
       Axios.post("http://localhost:8000/api/auth/register", BODY).then(
         response => {
           // if user successfully logged in
           if (response.data.valid === true) {
-            this.setState({ show_message: false });
+            this.setState({ response_type: "success" });
+            this.setState({ show_toast: true });
+            this.setState({ show_message: true });
+            this.setState({ response_message: response.data.response_message });
 
-            // redirect user to home page
-            document.location.href = "/login";
+            // // redirect user to home page
+            // document.location.href = "/login";
           } else {
-            console.log("OH WELL");
+            this.setState({ response_type: "danger" });
             this.setState({ response_message: response.data.response_message });
             this.setState({ show_message: true });
           }
@@ -105,29 +110,15 @@ class Register extends Component {
           </Form.Control.Feedback>
         </Form.Group>
         {this.state.show_message ? (
-          <Alert variant="danger">{this.state.response_message}</Alert>
+          <Alert variant={this.state.response_type}>
+            {this.state.response_message}
+          </Alert>
         ) : (
           ""
         )}
         <Button variant="warning" type="submit">
           Register
         </Button>
-        <Toast
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0
-          }}
-          show={this.state.show_toast}
-          onClose={this.closeToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Header>
-            <strong className="mr-auto">Account</strong>
-          </Toast.Header>
-          <Toast.Body>You account has been created!</Toast.Body>
-        </Toast>
       </Form>
     );
   }

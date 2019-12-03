@@ -50,6 +50,7 @@ class Login extends Component {
             document.location.href = "/";
           } else {
             console.log("OH WELL");
+            console.log(response.data);
             this.setState({ response_message: response.data.response_message });
             this.setState({ show_message: true });
           }
