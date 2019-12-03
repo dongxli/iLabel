@@ -23,8 +23,12 @@ class UploadPhoto extends Component {
   }
 
   render() {
-    console.log(this.state.list);
-    if (!this.state.list.length && !this.state.empty) return null;
+    if (
+      this.state.list == undefined ||
+      !this.state.list.length ||
+      !this.state.empty
+    )
+      return null;
 
     let list = this.state.list.map((el, i) => (
       <tr key={el[0]}>
