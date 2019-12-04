@@ -10,7 +10,6 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 function App() {
   const AUTH = localStorage.getItem("user") && localStorage.getItem("token");
-  console.log(AUTH);
 
   return (
     <Router>

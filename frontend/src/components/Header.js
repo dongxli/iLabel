@@ -4,12 +4,33 @@ import { Nav, Navbar, Container, Button } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import UploadPhoto from "./UploadPhoto";
 import logo from "../logo.png";
+import Axios from "axios";
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = { user: null };
   }
+  logout = event => {
+    console.log("XD");
+    const TOKEN = localStorage.getItem("token");
+    const HEADERS = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${TOKEN}`
+      }
+    };
+    // HEADERS.headers["Authorization"] = `Token ${TOKEN}`;
+    console.log(HEADERS);
+    Axios.post("http://localhost:8000/api/auth/logout", null, HEADERS).then(
+      response => {
+        console.log(response);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        document.location.href = "/";
+      }
+    );
+  };
 
   componentDidMount() {
     this.setState({ user: JSON.parse(localStorage.getItem("user")) });
@@ -27,7 +48,7 @@ class Header extends Component {
               {this.state.user ? `Welcome ${this.state.user.username}` : ""}
             </strong>
           </span>
-          <Button size="sm" variant="warning">
+          <Button size="sm" variant="warning" onClick={this.logout}>
             Log out
           </Button>
         </span>

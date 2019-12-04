@@ -95,22 +95,6 @@ class UploadPhoto extends Component {
             />
           </Form.Group>
         </Form>
-        <Toast
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0
-          }}
-          show={this.state.show}
-          onClose={this.closeToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Header>
-            <strong className="mr-auto">Image</strong>
-          </Toast.Header>
-          <Toast.Body>Your image has been processed!</Toast.Body>
-        </Toast>
       </div>
     );
   }
