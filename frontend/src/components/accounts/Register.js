@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button, Alert, Toast } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import Axios from "axios";
 
 class Register extends Component {
@@ -31,7 +31,6 @@ class Register extends Component {
 
     // form is filled out
     if (form.checkValidity() === true) {
-      console.log("XD");
       const BODY = {
         username: this.state.username,
         password: this.state.password,

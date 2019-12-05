@@ -29,6 +29,7 @@ class Registration(generics.GenericAPIView):
                 "token": "",
                 "response_message": "Can not register, please change your username or email"
             })
+        # registered
         else:
             user = serializer.save()
             return Response({

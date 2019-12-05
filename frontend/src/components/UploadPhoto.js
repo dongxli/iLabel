@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Image, Table, Form, Button, Spinner } from "react-bootstrap";
-import Toast from "react-bootstrap/Toast";
-import axios from "axios";
+import { Form, Button, Spinner } from "react-bootstrap";
+import Axios from "axios";
 
 class UploadPhoto extends Component {
   state = {
@@ -31,16 +30,26 @@ class UploadPhoto extends Component {
     // let user know it is in progress
     this.setState({ in_progress: true });
 
-    // calls backend
-    axios.post("http://localhost:8000/api/images/", formData).then(result => {
-      // uploaded and reset the form
-      this.setState({
-        selectedFile: null,
-        description: "",
-        show: true,
-        in_progress: false
-      });
-    });
+    const TOKEN = localStorage.getItem("token");
+    const HEADERS = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${TOKEN}`
+      }
+    };
+
+    // upload
+    Axios.post("http://localhost:8000/api/images/", formData, HEADERS).then(
+      result => {
+        // uploaded and reset the form
+        this.setState({
+          selectedFile: null,
+          description: "",
+          show: true,
+          in_progress: false
+        });
+      }
+    );
   };
 
   render() {

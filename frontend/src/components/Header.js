@@ -1,8 +1,5 @@
 import React, { Component, Fragment } from "react";
-import ListPhoto from "./ListPhoto";
 import { Nav, Navbar, Container, Button } from "react-bootstrap";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import UploadPhoto from "./UploadPhoto";
 import logo from "../logo.png";
 import Axios from "axios";
 
@@ -12,7 +9,6 @@ class Header extends Component {
     this.state = { user: null };
   }
   logout = event => {
-    console.log("XD");
     const TOKEN = localStorage.getItem("token");
     const HEADERS = {
       headers: {
@@ -20,11 +16,8 @@ class Header extends Component {
         Authorization: `Token ${TOKEN}`
       }
     };
-    // HEADERS.headers["Authorization"] = `Token ${TOKEN}`;
-    console.log(HEADERS);
     Axios.post("http://localhost:8000/api/auth/logout", null, HEADERS).then(
       response => {
-        console.log(response);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         document.location.href = "/";

@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  Form,
-  Button,
-  Col,
-  InputGroup,
-  FormControl,
-  Alert
-} from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import Axios from "axios";
 
 class Login extends Component {
@@ -33,7 +26,6 @@ class Login extends Component {
 
     // form is filled out
     if (form.checkValidity() === true) {
-      console.log("XD");
       const BODY = {
         username: this.state.username,
         password: this.state.password
@@ -49,8 +41,6 @@ class Login extends Component {
             // redirect user to home page
             document.location.href = "/";
           } else {
-            console.log("OH WELL");
-            console.log(response.data);
             this.setState({ response_message: response.data.response_message });
             this.setState({ show_message: true });
           }

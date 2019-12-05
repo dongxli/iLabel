@@ -6,13 +6,12 @@ import boto3
 import os
 import io
 from .serializers import ImageSerializer    
-from django.shortcuts import redirect
 from .models import Image as IM
 from . import config
 
 class ImageView(APIView):
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
 
     def post(self, request):
@@ -58,14 +57,9 @@ class ImageView(APIView):
         # get the labels and join into comma separated 
         labels = [label['Name'] for label in response_labels['Labels']]
         comma_separated_labels = ", ".join(labels)
-        
-
-        # image_url = s3_client.generate_presigned_url(
-        #         'get_object',
-        #         Params={'Bucket': config.S3_BUCKET_NAME, 'Key': key})   
 
         # create/save image details in database
-        image_saving = IM(key=key, labels=comma_separated_labels,description=description,username="temp")
+        image_saving = IM(key=key, labels=comma_separated_labels,description=description, owner=request.user)
         image_saving.save()
 
         return Response({"key": key, "labels": comma_separated_labels})
@@ -73,12 +67,25 @@ class ImageView(APIView):
     def get(self,request):
 
         # get all images 
-        all_images = IM.objects.all()
+        all_images = request.user.images.all()
         serializer = ImageSerializer(all_images, many=True)
+        print(serializer.data)
+
+        # get s3 client
+        s3_client = boto3.client('s3',
+            aws_access_key_id=config.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=config.AWS_SECRET_ACCESS_KEY)
+        for data in serializer.data:
+            image_url = s3_client.generate_presigned_url(
+                'get_object',
+                Params={'Bucket': config.S3_BUCKET_NAME, 'Key': data['key']})  
+            data['url'] = image_url
         
         return Response({"image_details": serializer.data})
 
-        # return Response({"data": all_images})
+    def delete(self, request, pk):
+        image = request.user.images.get(id=pk)
+        deleted = image.delete()
+        return Response({"deleted": deleted})
 
-    # def delete(self, request):
 
