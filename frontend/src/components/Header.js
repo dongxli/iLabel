@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Nav, Navbar, Container, Button } from "react-bootstrap";
 import logo from "../logo.png";
 import Axios from "axios";
+import data from "../config.json";
 
 class Header extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class Header extends Component {
         Authorization: `Token ${TOKEN}`
       }
     };
-    Axios.post("http://localhost:8000/api/auth/logout", null, HEADERS).then(
+    Axios.post(data.backend_url + "/api/auth/logout", null, HEADERS).then(
       response => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");

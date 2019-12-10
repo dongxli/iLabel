@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import Axios from "axios";
+import data from "../../config.json";
 
 class Login extends Component {
   constructor(props) {
@@ -31,21 +32,19 @@ class Login extends Component {
         password: this.state.password
       };
 
-      Axios.post("http://localhost:8000/api/auth/login", BODY).then(
-        response => {
-          // if user successfully logged in
-          if (response.data.valid === true) {
-            this.setState({ show_message: false });
-            localStorage.setItem("user", JSON.stringify(response.data.user));
-            localStorage.setItem("token", response.data.token);
-            // redirect user to home page
-            document.location.href = "/";
-          } else {
-            this.setState({ response_message: response.data.response_message });
-            this.setState({ show_message: true });
-          }
+      Axios.post(data.backend_url + "/api/auth/login", BODY).then(response => {
+        // if user successfully logged in
+        if (response.data.valid === true) {
+          this.setState({ show_message: false });
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          localStorage.setItem("token", response.data.token);
+          // redirect user to home page
+          document.location.href = "/";
+        } else {
+          this.setState({ response_message: response.data.response_message });
+          this.setState({ show_message: true });
         }
-      );
+      });
     }
   };
 

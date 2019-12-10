@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, Spinner } from "react-bootstrap";
 import Axios from "axios";
+import data from "../config.json";
 
 class UploadPhoto extends Component {
   state = {
@@ -39,7 +40,7 @@ class UploadPhoto extends Component {
     };
 
     // upload
-    Axios.post("http://localhost:8000/api/images/", formData, HEADERS).then(
+    Axios.post(data.backend_url + "/api/images/", formData, HEADERS).then(
       result => {
         // uploaded and reset the form
         this.setState({

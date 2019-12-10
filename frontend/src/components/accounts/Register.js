@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import Axios from "axios";
+import data from "../../config.json";
 
 class Register extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Register extends Component {
         email: this.state.email
       };
 
-      Axios.post("http://localhost:8000/api/auth/register", BODY).then(
+      Axios.post(data.backend_url + "/api/auth/register", BODY).then(
         response => {
           // if user successfully logged in
           if (response.data.valid === true) {

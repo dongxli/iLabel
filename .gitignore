@@ -17,6 +17,7 @@ media
 *.py[cod]
 *$py.class
 config.py
+config.json
 
 # C extensions
 *.so

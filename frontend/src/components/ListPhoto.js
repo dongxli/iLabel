@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Table, Button } from "react-bootstrap";
 import Axios from "axios";
+import data from "../config.json";
 
 class UploadPhoto extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class UploadPhoto extends Component {
       }
     };
     Axios.delete(
-      `http://localhost:8000/api/images/${event.target.value}/`,
+      data.backend_url + `/api/images/${event.target.value}/`,
       HEADERS
     ).then(response => {
       // reload after it is deleted
@@ -35,7 +36,7 @@ class UploadPhoto extends Component {
       }
     };
     // get all the images under the user
-    Axios.get("http://localhost:8000/api/images", HEADERS).then(result => {
+    Axios.get(data.backend_url + "/api/images", HEADERS).then(result => {
       if (result.status === 200) {
         this.setState({ list: result.data.image_details, empty: false });
       } else {
